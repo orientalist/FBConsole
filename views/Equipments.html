@@ -3,9 +3,9 @@
 {{ block 'head' }}
 <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
 <style>
-   #divCarousel{
-       width: 50vw;
-   }
+    #divCarousel {
+        width: 600px !important;
+    }
 </style>
 {{ /block }}
 {{ block 'body' }}
@@ -46,15 +46,27 @@
                 </div>
             </div>
         </div>
-        <div style="margin-top: 10px;">
-            <input type="text" name="accountLinkUrl">
+    </div>
+    <div style="display: flex;flex-direction: row">
+        <div style="width: 50%; padding-left: 10px;">
+            <span>器材名稱</span>
+            <br>
+            <input type="text" name="eqName_Modify">
+            <br>
+            <span>器材圖片網址</span>
+            <br>
+            <input type="text" name="eqUrl_Modify">
+            <br>
+            <span>器材狀態</span>
+            <select name="eqStatus_Modify">
+                <option value="1">顯示</option>
+                <option value="0">隱藏</option>
+                <option value="9">刪除</option>
+            </select>
         </div>
-        <a href="#" id='aCreate' class="btn btn-success btn-icon-split">
-            <span class="icon text-white-50">
-                <i class="fas fa-check"></i>
-            </span>
-            <span class="text">儲存</span>
-        </a>
+        <div style="width: 50%;padding-left: 10px;">
+            aa
+        </div>
     </div>
 </div>
 {{ /block }}
@@ -62,9 +74,11 @@
 <script src="/public/js/viewJs/AccountLinkingUrl.js"></script>
 <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 <script>
+    var flickity=null
     $(document).ready(() => {
         $('.ddlMainPartitions').click(function (e) {
             e.preventDefault()
+            $('#divCarousel').remove()
             $('div[aria-labelledby="ddlSubPartitions"]').empty()
             $('#choosenSubPartition').text('')
             $('#choosenPartition').text($(this).attr('data-name'))
@@ -92,40 +106,62 @@
     })
     var InitializeDdlFunction = () => {
         $('.ddlSubPartitions').click(function (e) {
-            $('#divCarousel').remove()
             $('#choosenSubPartition').text($(this).text())
-            $.ajax({
-                url: '/GetEquipments?g=' + $(this).attr('data-groupSn'),
-                type: 'GET'
-            }).done((result) => {
-                if (result.code === 1) {
-                    var equipments = result.data[0].equipments
-                    if (equipments.length > 0) {
-                        var divCarousel = $('<div>', {
-                            id: 'divCarousel'
-                        })
-                        $.each(equipments, (idx, value) => {
-                            var newDiv = $('<div>', {
-                                'data-eqid': value._id,
-                                'data-equipName': value.name,
-                                class: 'carousel-cell'
-                            })
-                            var img = $('<img>', {
-                                src: value.picUrl
-                            })
-                            $(newDiv).append(img)
-                            $(divCarousel).append(newDiv)
-                        })
-                        $('#divCindition').after(divCarousel)
-                        $(divCarousel).flickity({
-                            // options
-                            cellAlign: 'left',
-                            contain: true
-                        })
-                    }
-                }
-            })
+            $('.ddlSubPartitions').removeClass('selectedClass')
+            $(this).addClass('selectedClass')
+            GetEquipments()
         })
+    }
+    var GetEquipments = () => {
+        $('#divCarousel').remove()
+        $.ajax({
+            url: '/GetEquipments?g=' + $('.selectedClass').attr('data-groupSn'),
+            type: 'GET'
+        }).done((result) => {
+            if (result.code === 1) {
+                var equipments = result.data[0].equipments
+                if (equipments.length > 0) {
+                    var divCarousel = $('<div>', {
+                        id: 'divCarousel',
+                        class: 'main-carousel',
+                    })
+                    $.each(equipments, (idx, value) => {
+                        var newDiv = $('<div>', {
+                            'data-eqid': value._id,
+                            'data-equipName': value.name,
+                            'data-url':value.picUrl,
+                            'data-status':value.status,
+                            class: 'carousel-cell'
+                        })
+                        var img = $('<img>', {
+                            src: value.picUrl
+                        })
+                        $(newDiv).append(img)
+                        $(newDiv).appendTo(divCarousel);
+                    })
+                    $('#divCindition').after(divCarousel)
+                    flickity=$('#divCarousel').flickity({
+                        // options
+                        cellAlign: 'left',
+                        contain: true,
+                        imagesLoaded: true,
+                        pageDots: false,
+                        on: {
+                            change: () => {
+                                fnBindData()
+                            }
+                        }
+                    }).data('flickity')
+                    fnBindData()
+                }
+            }
+        })
+    }
+    var fnBindData=()=>{
+        var equipment=$(flickity.selectedElement)
+        $('input[name="eqName_Modify"]').val(equipment.attr('data-equipName'))
+        $('input[name="eqUrl_Modify"]').val(equipment.attr('data-url'))
+        $('select[name="eqStatus_Modify"]').val(equipment.attr('data-status'))
     }
 </script>
 {{ /block }}
