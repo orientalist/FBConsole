@@ -1,0 +1,39 @@
+{{ extend './_layouts/home.html' }}
+{{ block 'title' }}{{ 'Get Started Buttons' }}{{ /block }}
+{{ block 'head' }}{{ /block }}
+{{ block 'body' }}
+<div class="card mb-4">
+    <div class="card-header py-3">
+        <p>說明：<br>
+            Bot 的歡迎畫面可以顯示開始使用按鈕。<br>
+            點按這個按鈕時，Messenger 平台會傳送 messaging_postbacks 事件至您的 Webhook。<br>
+            加入這個按鈕的 Bot 或許也要設定問候語。</p>
+        <p><a href="https://developers.facebook.com/docs/messenger-platform/reference/messenger-profile-api/get-started-button"
+                target="blank" target="blank">官方頁面</a></p>
+    </div>
+    <div class="card-header py-3">
+        <p>圖例:</p>
+        <p>
+            <img style="max-width:450px;"
+                src="https://scontent.ftpe7-1.fna.fbcdn.net/v/t39.2365-6/14302685_243106819419381_1314180151_n.png?_nc_cat=100&_nc_ht=scontent.ftpe7-1.fna&oh=f462b3813643375bd5b19c155e29ef6c&oe=5D84C35C"
+                alt="pic1">
+        </p>
+    </div>
+    <div class="card-header py-3">
+        {{ include './_partials/ddlBots.html' }}
+        <div>
+            開始按鈕回傳訊息：<input type="text" name="payload" id="payload">
+            <a href="#" id='aCreate' class="btn btn-success btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-check"></i>
+                </span>
+                <span class="text">儲存</span>
+            </a>
+        </div>
+    </div>
+</div>
+{{ /block }}
+{{ block 'script' }}
+<script src="/public/js/ddlBots.js"></script>
+<script src="/public/js/viewJs/GetStartedButton.js"></script>
+{{ /block }}

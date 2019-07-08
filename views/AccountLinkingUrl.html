@@ -1,0 +1,41 @@
+{{ extend './_layouts/home.html' }}
+{{ block 'title' }}{{ 'Account Link Url' }}{{ /block }}
+{{ block 'head' }}{{ /block }}
+{{ block 'body' }}
+<div class="card mb-4">
+    <div class="card-header py-3">
+        <p>說明:<br>
+            Messenger 的帳號連結功能可讓您以安全一致的方式，將 Bot 的用戶帳號連結到用戶的 Messenger 帳號。<br>
+            當用戶連結帳號後，個人檔案畫面就會顯示登入和登出按鈕。Bot 的 Messenger 個人檔案中必須包含有效的 account_linking_url，<br>
+            才能使用這項功能。
+        </p>
+        <a target="blank"
+            href="https://developers.facebook.com/docs/messenger-platform/reference/messenger-profile-api/account-linking-url">官方頁面</a><br>
+        如需實作帳號連結的完整詳細資訊，請參閱<a href="https://developers.facebook.com/docs/messenger-platform/identity/account-linking"
+            target="blank">帳號連結</a>。
+    </div>
+    <div class="card-header py-3">
+        <p>JSON格式:</p>
+        <code>
+            {
+                "account_linking_url":"<YOUR_ACCOUNT_LINKING_URL>"
+            }
+        </code>
+    </div>
+    <div class="card-header py-3">
+        {{ include './_partials/ddlBots.html' }}
+        帳號連結頁面網址:
+        <input type="text" name="accountLinkUrl">
+        <a href="#" id='aCreate' class="btn btn-success btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-check"></i>
+            </span>
+            <span class="text">儲存</span>
+        </a>
+    </div>
+</div>
+{{ /block }}
+{{ block 'script' }}
+<script src="/public/js/ddlBots.js"></script>
+<script src="/public/js/viewJs/AccountLinkingUrl.js"></script>
+{{ /block }}

@@ -1,0 +1,7 @@
+{
+    "postbackRequest":{
+        "cmd":["record"],
+        "type":["workout"],
+        "partition":["chest","back","leg"]
+    }
+}

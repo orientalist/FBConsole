@@ -1,0 +1,41 @@
+{{ extend './_layouts/home.html' }}
+{{ block 'title' }}{{ 'Welcome Page' }}{{ /block }}
+{{ block 'head' }}{{ /block }}
+{{ block 'body' }}
+<div class="card mb-4">
+    <div class="card-header py-3">
+        <p>說明:<br>
+            歡迎畫面是用戶進入 Messenger Bot 時第一眼看到的畫面，其中包含 Bot 的介紹及其提供的服務，另外還會顯示 Bot 的<br>
+            名稱和回覆情況、Facebook 粉絲專頁的大頭貼照和封面相片、視情況選用的問候語，以及「開始使用」按鈕。
+        </p>
+        <a target="blank" href="https://developers.facebook.com/docs/messenger-platform/discovery/welcome-screen#set_postback">官方頁面</a>
+    </div>
+    <div class="card-header py-3">
+        <p>圖例:</p>
+        <p>
+            <img style="max-width:450px;"
+                src="https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.2365-6/14302685_243106819419381_1314180151_n.png?_nc_cat=100&_nc_ht=scontent.ftpe8-2.fna&oh=d115806d7991a76e1d034b1392e3bbde&oe=5D84C35C"
+                alt="example">
+        </p>
+    </div>
+    <div class="card-header py-3">
+        {{ include './_partials/ddlBots.html' }}
+        <div>
+            預設問候語:<br>
+            <input type="text" name="default" id="default"><br>
+            中文問候語:<br>
+            <input type="text" name="zh_TW" id="zh_TW"><br>
+            <a href="#" id='aCreate' class="btn btn-success btn-icon-split" style="margin-top: 10px;">
+                <span class="icon text-white-50">
+                    <i class="fas fa-check"></i>
+                </span>
+                <span class="text">儲存</span>
+            </a>
+        </div>
+    </div>
+</div>
+{{ /block }}
+{{ block 'script' }}
+<script src="/public/js/ddlBots.js"></script>
+<script src="/public/js/viewJs/WelcomePage.js"></script>
+{{ /block }}

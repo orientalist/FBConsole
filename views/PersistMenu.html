@@ -1,0 +1,195 @@
+{{ extend './_layouts/home.html' }}
+{{ block 'title' }}{{ 'PersistentMenu設定' }}{{ /block }}
+{{ block 'head' }}
+<style>
+    .web_url {
+        display: none;
+    }
+
+    .pTitle {
+        display: none;
+    }
+
+    .pPayload {
+        display: none;
+    }
+</style>
+{{ /block }}
+{{ block 'body' }}
+<!-- Dropdown No Arrow -->
+<div class="card mb-4">
+    <div class="card-header py-3">
+        <p style="color: red">注意！</p>
+        <p>您的Bot必須先設置Get Started按鈕,才可設定Persistent menu</p>
+    </div>
+    <div class="card-header py-3">
+        <p>說明:<br>
+            提供用戶快速選擇機器人的核心功能,最多可設定3個。
+        </p>
+        <a target="blank" href="https://developers.facebook.com/docs/messenger-platform/reference/messenger-profile-api/persistent-menu">官方頁面</a>
+    </div>
+    <div class="card-header py-3">
+        <p>圖例:</p>
+        <p><img style="max-width:450px;" src="https://scontent.ftpe7-1.fna.fbcdn.net/v/t39.8562-6/64206987_2284308041834964_8936678571800264704_n.jpg?_nc_cat=110&_nc_ht=scontent.ftpe7-1.fna&oh=17c39059b8a94af73a1f47eb900cf0fb&oe=5D7EE427" alt="example"></p>
+    </div>
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">請選擇Bot</h6>
+    </div>
+    <div class="card-body">
+        {{ include './_partials/ddlBots.html' }}
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Menu地區:</th>
+                        <th>
+                            <select name="locale" id="locale">
+                                <option value="default">default</option>
+                            </select>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>僅透過PersistentMenu與Bot互動</th>
+                        <th>
+                            <select name="composer_input_disabled" id="composer_input_disabled">
+                                <option value="true">是</option>
+                                <option value="false">否</option>
+                            </select>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            <P>PersistentMenu動作</P>
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <tbody>
+                    <tr>
+                        <td class="action">
+                            <p>
+                                <label>動作類型</label>
+                                <br>
+                                <select name="type" id="type">
+                                    <option value="0">請選擇</option>
+                                    <option value="postback">PostBack</option>
+                                    <option value="web_url">開啟WebView</option>
+                                </select>
+                            </p>
+                            <p class="pTitle">
+                                <label>動作標題</label>
+                                <br>
+                                <input type="text" name="title" id="title">
+                            </p>
+                            <p class="pPayload">
+                                <label>回傳資料</label>
+                                <br>
+                                <input type="text" name="payload" id="payload">
+                            </p>
+                            <div class="web_url">
+                                <p>
+                                    <label>動作url</label>
+                                    <br>
+                                    <input type="text" name="url" id="url">
+                                </p>
+                                <p>
+                                    <label>WebView尺寸</label>
+                                    <br>
+                                    <select name="webview_height_ratio" id="webview_height_ratio">
+                                        <option value="compact">緊湊</option>
+                                        <option value="tall">高</option>
+                                        <option value="full">充滿</option>
+                                    </select>
+                                </p>
+                            </div>
+                        </td>
+                        <td class="action">
+                            <p>
+                                <label>動作類型</label>
+                                <br>
+                                <select name="type" id="type">
+                                    <option value="0">請選擇</option>
+                                    <option value="postback">PostBack</option>
+                                    <option value="web_url">開啟WebView</option>
+                                </select>
+                            </p>
+                            <p class="pTitle">
+                                <label>動作標題</label>
+                                <br>
+                                <input type="text" name="title" id="title">
+                            </p>
+                            <p class="pPayload">
+                                <label>回傳資料</label>
+                                <br>
+                                <input type="text" name="payload" id="payload">
+                            </p>
+                            <div class="web_url">
+                                <p>
+                                    <label>動作url</label>
+                                    <br>
+                                    <input type="text" name="url" id="url">
+                                </p>
+                                <p>
+                                    <label>WebView尺寸</label>
+                                    <br>
+                                    <select name="webview_height_ratio" id="webview_height_ratio">
+                                        <option value="compact">緊湊</option>
+                                        <option value="tall">高</option>
+                                        <option value="full">充滿</option>
+                                    </select>
+                                </p>
+                            </div>
+                        </td>
+                        <td class="action">
+                            <p>
+                                <label>動作類型</label>
+                                <br>
+                                <select name="type" id="type">
+                                    <option value="0">請選擇</option>
+                                    <option value="postback">PostBack</option>
+                                    <option value="web_url">開啟WebView</option>
+                                </select>
+                            </p>
+                            <p class="pTitle">
+                                <label>動作標題</label>
+                                <br>
+                                <input type="text" name="title" id="title">
+                            </p>
+                            <p class="pPayload">
+                                <label>回傳資料</label>
+                                <br>
+                                <input type="text" name="payload" id="payload">
+                            </p>
+                            <div class="web_url">
+                                <p>
+                                    <label>動作url</label>
+                                    <br>
+                                    <input type="text" name="url" id="url">
+                                </p>
+                                <p>
+                                    <label>WebView尺寸</label>
+                                    <br>
+                                    <select name="webview_height_ratio" id="webview_height_ratio">
+                                        <option value="compact">緊湊</option>
+                                        <option value="tall">高</option>
+                                        <option value="full">充滿</option>
+                                    </select>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <a href="#" id='aCreate' class="btn btn-success btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-check"></i>
+                </span>
+                <span class="text">儲存</span>
+            </a>
+        </div>
+    </div>
+</div>
+{{ /block }}
+{{ block 'script' }}
+<script src="/public/js/ddlBots.js"></script>
+<script src="/public/js/viewJs/PersistMenu.js"></script>
+{{ /block }}

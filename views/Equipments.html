@@ -1,0 +1,131 @@
+{{ extend './_layouts/home.html' }}
+{{ block 'title' }}{{ '設定運動項目' }}{{ /block }}
+{{ block 'head' }}
+<link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+<style>
+   #divCarousel{
+       width: 50vw;
+   }
+</style>
+{{ /block }}
+{{ block 'body' }}
+<div class="card mb-4">
+    <div class="card-header py-3">
+        <p>說明:<br>
+            在此控管用戶透過Messenger開啟的 運動紀錄 可選擇的運動項目
+        </p>
+    </div>
+    <div class="card-header py-3">
+        <div style="display: flex;flex-direction:row;margin-bottom: 5px;" id='divCindition'>
+            <div>
+                <div class="dropdown mb-4">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="ddlPartitions"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        請選擇部位
+                    </button>
+                    <div class="dropdown-menu animated--fade-in" aria-labelledby="ddlPartitions">
+                        {{ each mainPartitions }}
+                        <a class="dropdown-item ddlMainPartitions" href="#"
+                            data-name='{{ $value.mainPartitions.name }}'>{{ $value.mainPartitions.name }}</a>
+                        {{ /each }}
+                    </div>
+                    <span>您選擇的部位:<span style="color: red;" id='choosenPartition'></span></span>
+                </div>
+            </div>
+            <div style="width: 50px"></div>
+            <div>
+                <div class="dropdown mb-4">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="ddlSubPartitions"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        請選擇子部位
+                    </button>
+                    <div class="dropdown-menu animated--fade-in" aria-labelledby="ddlSubPartitions">
+
+                    </div>
+                    <span>您選擇的子部位:<span style="color: red;" id='choosenSubPartition'></span></span>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 10px;">
+            <input type="text" name="accountLinkUrl">
+        </div>
+        <a href="#" id='aCreate' class="btn btn-success btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-check"></i>
+            </span>
+            <span class="text">儲存</span>
+        </a>
+    </div>
+</div>
+{{ /block }}
+{{ block 'script' }}
+<script src="/public/js/viewJs/AccountLinkingUrl.js"></script>
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+<script>
+    $(document).ready(() => {
+        $('.ddlMainPartitions').click(function (e) {
+            e.preventDefault()
+            $('div[aria-labelledby="ddlSubPartitions"]').empty()
+            $('#choosenSubPartition').text('')
+            $('#choosenPartition').text($(this).attr('data-name'))
+            $.ajax({
+                url: '/GetSubPartitions?p=' + $(this).attr('data-name'),
+                type: 'GET'
+            }).done((result) => {
+                if (result.code === 1) {
+                    var eles = result.data
+                    $.each(eles, (idx, value) => {
+                        var ele = value.subPartitions
+                        var a = $('<a/>', {
+                            class: 'dropdown-item ddlSubPartitions',
+                            href: '#',
+                            'data-groupSn': ele.groupSn,
+                            'text': ele.groupName
+                        })
+                        $('div[aria-labelledby="ddlSubPartitions"]').append(a)
+                    })
+                    InitializeDdlFunction()
+                }
+            })
+        })
+
+    })
+    var InitializeDdlFunction = () => {
+        $('.ddlSubPartitions').click(function (e) {
+            $('#divCarousel').remove()
+            $('#choosenSubPartition').text($(this).text())
+            $.ajax({
+                url: '/GetEquipments?g=' + $(this).attr('data-groupSn'),
+                type: 'GET'
+            }).done((result) => {
+                if (result.code === 1) {
+                    var equipments = result.data[0].equipments
+                    if (equipments.length > 0) {
+                        var divCarousel = $('<div>', {
+                            id: 'divCarousel'
+                        })
+                        $.each(equipments, (idx, value) => {
+                            var newDiv = $('<div>', {
+                                'data-eqid': value._id,
+                                'data-equipName': value.name,
+                                class: 'carousel-cell'
+                            })
+                            var img = $('<img>', {
+                                src: value.picUrl
+                            })
+                            $(newDiv).append(img)
+                            $(divCarousel).append(newDiv)
+                        })
+                        $('#divCindition').after(divCarousel)
+                        $(divCarousel).flickity({
+                            // options
+                            cellAlign: 'left',
+                            contain: true
+                        })
+                    }
+                }
+            })
+        })
+    }
+</script>
+{{ /block }}

@@ -1,0 +1,49 @@
+{{ extend './_layouts/home.html' }}
+{{ block 'title' }}{{ 'Domain Whitelist' }}{{ /block }}
+{{ block 'head' }}{{ /block }}
+{{ block 'body' }}
+<div class="card mb-4">
+    <div class="card-header py-3">
+        <p>說明:<br>
+            Bot 的 Messenger 個人檔案 whitelisted_domains 屬性會指定第三方網域清單，這些網域可在 Messenger WebView 中存取，搭配 Messenger<br>
+            擴充功能 SDK、核取方塊外掛程式，以及顧客聊天外掛程式使用。<br>
+            最多可設置 50 個。
+        </p>
+        <a target="blank"
+            href="https://developers.facebook.com/docs/messenger-platform/reference/messenger-profile-api/domain-whitelisting">官方頁面</a>
+    </div>
+    <div class="card-header py-3">
+        <p>需求:<br>
+            <li>透過 HTTPS 提供</li>
+            <li>使用完整網域名稱，例如 https://www.messenger.com/。允許清單不支援 IP 位址和 localhost。</li>
+        </p>
+    </div>
+    <div class="card-header py-3">
+        {{ include './_partials/ddlBots.html' }}
+        <a href="#" id='btnAddInput' class="btn btn-light btn-icon-split">
+            <span class="icon text-gray-600">
+                <i class="fas fa-arrow-right"></i>
+            </span>
+            <span class="text">新增輸入欄</span>
+        </a>
+        <div id='divWhiteLists' style="margin-top: 10px;">
+
+        </div>
+        <a href="#" id='aCreate' class="btn btn-success btn-icon-split" style="margin-top: 10px;display: none;">
+            <span class="icon text-white-50">
+                <i class="fas fa-check"></i>
+            </span>
+            <span class="text">儲存</span>
+        </a>
+        <p style="color: red">本功能暫不開放</p>
+    </div>
+</div>
+<p id='pInput' style="display: none">
+    白名單url:
+    <input type="text" name="whiteUrl" class="whiteUrl">
+</p>
+{{ /block }}
+{{ block 'script' }}
+<script src="/public/js/ddlBots.js"></script>
+<script src="/public/js/viewJs/DomainWhitelist.js"></script>
+{{ /block }}
