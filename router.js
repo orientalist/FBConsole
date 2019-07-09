@@ -206,6 +206,26 @@ router.get('/GetEquipments', (req, res) => {
         })
 })
 
+router.delete('/DeleteEquipment',(req,res)=>{
+    partitionsBl.DeleteEquipment(conn,req.body.pid,
+        (result)=>{
+            res.status(200).send({code:1})
+        },
+        (err)=>{
+            res.status(200).send({code:-1})
+        })        
+})
+
+router.post('/ModifyEquipment',(req,res)=>{
+    partitionsBl.ModifyEquipment(conn,req.body,
+        (result)=>{
+            res.status(200).send({code:1})
+        },
+        (err)=>{
+            res.status(200).send({code:-1})
+        })        
+})
+
 router.get('/Test/a/b', (req, res) => {
     console.log('get')
 })

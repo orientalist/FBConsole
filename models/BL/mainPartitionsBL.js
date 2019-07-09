@@ -52,7 +52,7 @@ exports.GetEquipments = (conn, groupSn, callback, fail) => {
                         $filter: {
                             input: '$equipments',
                             as: 'equipments',
-                            cond: { $eq: ['$$equipments.status', 1] }
+                            cond: { $ne: ['$$equipments.status', 9] }
                         }
                     }
                 }
@@ -68,5 +68,50 @@ exports.GetEquipments = (conn, groupSn, callback, fail) => {
             fail(err)
         }
 
+    )
+}
+
+exports.DeleteEquipment=(conn,equipmentId,callback,fail)=>{
+    var promise=conn.Equipments.update(
+        {
+            'equipments._id':equipmentId
+        },
+        {
+            $set:{
+                'equipments.$.status':9
+            }
+        }
+    )
+    promise.then(
+        (result)=>{
+            callback('ok')
+        },
+        (err)=>{
+            fail(err)
+        }
+    )
+}
+
+exports.ModifyEquipment=(conn,equipment,callback,fail)=>{
+    var promise=conn.Equipments.update(
+        {
+            'equipments._id':equipment._id
+        },
+        {
+            $set:{
+                'equipments.$.name':equipment.name,
+                'equipments.$.picUrl':equipment.picUrl,
+                'equipments.$.status':parseInt(equipment.status)
+            }
+        }
+    )
+
+    promise.then(
+        (result)=>{
+            callback('ok')
+        },
+        (err)=>{
+            fail(err)
+        }
     )
 }

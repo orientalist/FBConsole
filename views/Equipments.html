@@ -48,21 +48,41 @@
         </div>
     </div>
     <div style="display: flex;flex-direction: row">
-        <div style="width: 50%; padding-left: 10px;">
-            <span>器材名稱</span>
-            <br>
-            <input type="text" name="eqName_Modify">
-            <br>
-            <span>器材圖片網址</span>
-            <br>
-            <input type="text" name="eqUrl_Modify">
-            <br>
-            <span>器材狀態</span>
-            <select name="eqStatus_Modify">
-                <option value="1">顯示</option>
-                <option value="0">隱藏</option>
-                <option value="9">刪除</option>
-            </select>
+        <div style="width: 50%; padding-left: 10px;" id='divModify'>
+            <p>
+                <span>器材名稱</span>
+                <br>
+                <input type="text" name="eqName_Modify">
+                <input type="hidden" name="eqId_Modify">
+            </p>
+            <p>
+                <span>器材圖片網址</span>
+                <br>
+                <input type="text" name="eqUrl_Modify">
+            </p>
+            <p>
+                <span>器材狀態</span>
+                <br>
+                <select name="eqStatus_Modify">
+                    <option value="1">顯示</option>
+                    <option value="0">隱藏</option>                
+                </select>
+            </p>
+            <p id='pButtons_Modify' style="display:none">
+                <a id='aModify' href="#" class="btn btn-success btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">修改</span>
+                </a>
+
+                <a id='aDelete' href="#" class="btn btn-danger btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-trash"></i>
+                    </span>
+                    <span class="text">刪除</span>
+                </a>
+            </p>
         </div>
         <div style="width: 50%;padding-left: 10px;">
             aa
@@ -73,95 +93,5 @@
 {{ block 'script' }}
 <script src="/public/js/viewJs/AccountLinkingUrl.js"></script>
 <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
-<script>
-    var flickity=null
-    $(document).ready(() => {
-        $('.ddlMainPartitions').click(function (e) {
-            e.preventDefault()
-            $('#divCarousel').remove()
-            $('div[aria-labelledby="ddlSubPartitions"]').empty()
-            $('#choosenSubPartition').text('')
-            $('#choosenPartition').text($(this).attr('data-name'))
-            $.ajax({
-                url: '/GetSubPartitions?p=' + $(this).attr('data-name'),
-                type: 'GET'
-            }).done((result) => {
-                if (result.code === 1) {
-                    var eles = result.data
-                    $.each(eles, (idx, value) => {
-                        var ele = value.subPartitions
-                        var a = $('<a/>', {
-                            class: 'dropdown-item ddlSubPartitions',
-                            href: '#',
-                            'data-groupSn': ele.groupSn,
-                            'text': ele.groupName
-                        })
-                        $('div[aria-labelledby="ddlSubPartitions"]').append(a)
-                    })
-                    InitializeDdlFunction()
-                }
-            })
-        })
-
-    })
-    var InitializeDdlFunction = () => {
-        $('.ddlSubPartitions').click(function (e) {
-            $('#choosenSubPartition').text($(this).text())
-            $('.ddlSubPartitions').removeClass('selectedClass')
-            $(this).addClass('selectedClass')
-            GetEquipments()
-        })
-    }
-    var GetEquipments = () => {
-        $('#divCarousel').remove()
-        $.ajax({
-            url: '/GetEquipments?g=' + $('.selectedClass').attr('data-groupSn'),
-            type: 'GET'
-        }).done((result) => {
-            if (result.code === 1) {
-                var equipments = result.data[0].equipments
-                if (equipments.length > 0) {
-                    var divCarousel = $('<div>', {
-                        id: 'divCarousel',
-                        class: 'main-carousel',
-                    })
-                    $.each(equipments, (idx, value) => {
-                        var newDiv = $('<div>', {
-                            'data-eqid': value._id,
-                            'data-equipName': value.name,
-                            'data-url':value.picUrl,
-                            'data-status':value.status,
-                            class: 'carousel-cell'
-                        })
-                        var img = $('<img>', {
-                            src: value.picUrl
-                        })
-                        $(newDiv).append(img)
-                        $(newDiv).appendTo(divCarousel);
-                    })
-                    $('#divCindition').after(divCarousel)
-                    flickity=$('#divCarousel').flickity({
-                        // options
-                        cellAlign: 'left',
-                        contain: true,
-                        imagesLoaded: true,
-                        pageDots: false,
-                        on: {
-                            change: () => {
-                                fnBindData()
-                            }
-                        }
-                    }).data('flickity')
-                    fnBindData()
-                }
-            }
-        })
-    }
-    var fnBindData=()=>{
-        var equipment=$(flickity.selectedElement)
-        $('input[name="eqName_Modify"]').val(equipment.attr('data-equipName'))
-        $('input[name="eqUrl_Modify"]').val(equipment.attr('data-url'))
-        $('select[name="eqStatus_Modify"]').val(equipment.attr('data-status'))
-    }
-</script>
+<script src='/public/js/viewJs/Equipments.js'></script>
 {{ /block }}
