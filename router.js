@@ -4,7 +4,7 @@ var admin = require('./models/admin')
 var FBFunctions = require('./code/Fbfunctions')
 var conn = require('./models/db/connection')
 var partitionsBl = require('./models/BL/mainPartitionsBL')
-var access_token=require('./models/messengerProfile/config')
+var access_token = require('./models/messengerProfile/config')
 
 router.use((req, res, next) => {
     admin.SetAdmin('Xiang', 'https://scontent.ftpe7-2.fna.fbcdn.net/v/t1.0-1/p40x40/59203844_2321267341228979_4969615553355317248_n.jpg?_nc_cat=111&_nc_ht=scontent.ftpe7-2.fna&oh=4ccd36ba803db363770d57e5e5324f45&oe=5DC4D2CA')
@@ -199,31 +199,42 @@ router.get('/GetSubPartitions', (req, res) => {
 router.get('/GetEquipments', (req, res) => {
     partitionsBl.GetEquipments(conn, req.query['g'],
         (equipments) => {
-            res.status(200).send({code:1,data:equipments})
+            res.status(200).send({ code: 1, data: equipments })
         },
         (err) => {
-            res.status(200).send({code:-1})
+            res.status(200).send({ code: -1 })
         })
 })
 
-router.delete('/DeleteEquipment',(req,res)=>{
-    partitionsBl.DeleteEquipment(conn,req.body.pid,
-        (result)=>{
-            res.status(200).send({code:1})
+router.delete('/DeleteEquipment', (req, res) => {
+    partitionsBl.DeleteEquipment(conn, req.body.pid,
+        (result) => {
+            res.status(200).send({ code: 1 })
         },
-        (err)=>{
-            res.status(200).send({code:-1})
-        })        
+        (err) => {
+            res.status(200).send({ code: -1 })
+        })
 })
 
-router.post('/ModifyEquipment',(req,res)=>{
-    partitionsBl.ModifyEquipment(conn,req.body,
-        (result)=>{
-            res.status(200).send({code:1})
+router.post('/ModifyEquipment', (req, res) => {
+    partitionsBl.ModifyEquipment(conn, req.body,
+        (result) => {
+            res.status(200).send({ code: 1 })
         },
-        (err)=>{
+        (err) => {
+            res.status(200).send({ code: -1 })
+        })
+})
+
+router.post('/CreateEquipment', (req, res) => {
+    partitionsBl.CreateEquipment(conn, req.body,
+        (result) => {
+            res.status(200).send({code:1})
+         },
+        (err) => { 
             res.status(200).send({code:-1})
-        })        
+        }
+    )    
 })
 
 router.get('/Test/a/b', (req, res) => {

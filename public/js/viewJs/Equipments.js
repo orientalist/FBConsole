@@ -2,6 +2,7 @@ var flickity = null
 $(document).ready(() => {
     $('.ddlMainPartitions').click(function (e) {
         e.preventDefault()
+        $('#pButtons_Create').hide()
         $('#divCarousel').remove()
         fnResetModifyInput()
         $('div[aria-labelledby="ddlSubPartitions"]').empty()
@@ -18,7 +19,9 @@ $(document).ready(() => {
                     var a = $('<a/>', {
                         class: 'dropdown-item ddlSubPartitions',
                         href: '#',
+                        'data-belongTo':$(this).attr('data-name'),
                         'data-groupSn': ele.groupSn,
+                        'data-name':ele.groupName,
                         'text': ele.groupName
                     })
                     $('div[aria-labelledby="ddlSubPartitions"]').append(a)
@@ -70,12 +73,44 @@ $(document).ready(() => {
             })
         }
     })
+    $('#aCreate').click(function(e){
+        e.preventDefault()
+        var data={
+            belongTo:$('.selectedClass').attr('data-belongTo'),
+            groupSn:$('.selectedClass').attr('data-groupSn'),
+            groupName:$('.selectedClass').attr('data-name'),
+            name:$('input[name="eqName_Create"]').val(),
+            picUrl:$('input[name="eqUrl_Create"]').val(),
+            status:$('select[name="eqStatus_Create"]').val()
+        }        
+        if(data.belongTo.length<=0||data.groupName.length<=0||data.groupSn.length<=0||data.name.length<=0||data.picUrl.length<=0||data.status.length<=0){
+            alert('資料未填')
+            return
+        }
+        if(confirm(`確定建立 ${data.name} ?`)){
+            $.ajax({
+                url:'/CreateEquipment',
+                type:'POST',
+                data:data
+            }).done((result)=>{
+                if(result.code===1){
+                    alert('新增成功')
+                    GetEquipments()
+                }
+                else
+                {
+                    alert('伺服器忙碌中')
+                }
+            })
+        }        
+    })
 })
 var InitializeDdlFunction = () => {
     $('.ddlSubPartitions').click(function (e) {        
         $('#choosenSubPartition').text($(this).text())
         $('.ddlSubPartitions').removeClass('selectedClass')
         $(this).addClass('selectedClass')
+        $('#pButtons_Create').show()
         GetEquipments()
     })
 }
@@ -120,7 +155,7 @@ var GetEquipments = () => {
                         }
                     }
                 }).data('flickity')
-                $('#pButtons_Modify').show()
+                $('#pButtons_Modify').show()                
                 fnBindData()
             }
         }
@@ -136,5 +171,5 @@ var fnBindData = () => {
 var fnResetModifyInput=()=>{
     $('#divModify input').val('')
     $('select[name="eqStatus_Modify"]').val('1')
-    $('#pButtons_Modify').hide()
+    $('#pButtons_Modify').hide()    
 }

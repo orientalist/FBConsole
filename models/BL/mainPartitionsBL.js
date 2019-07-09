@@ -115,3 +115,33 @@ exports.ModifyEquipment=(conn,equipment,callback,fail)=>{
         }
     )
 }
+
+exports.CreateEquipment=(conn,equipment,callback,fail)=>{
+    var promise=conn.Equipments.update(
+        {
+            belongTo:equipment.belongTo,
+            groupSn:equipment.groupSn,
+            groupName:equipment.groupName,
+            groupStatus:1
+        },
+        {
+            $push:{
+                'equipments':{
+                    name:equipment.name,
+                    picUrl:equipment.picUrl,
+                    status:equipment.status
+                }
+            }
+        },
+        {upsert:true}
+    )
+
+    promise.then(
+        (result)=>{
+            callback('ok')
+        },
+        (err)=>{
+            fail(err)
+        }
+    )
+}

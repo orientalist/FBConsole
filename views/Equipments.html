@@ -49,6 +49,7 @@
     </div>
     <div style="display: flex;flex-direction: row">
         <div style="width: 50%; padding-left: 10px;" id='divModify'>
+            <p>修改器材</p>
             <p>
                 <span>器材名稱</span>
                 <br>
@@ -85,13 +86,38 @@
             </p>
         </div>
         <div style="width: 50%;padding-left: 10px;">
-            aa
+            <p>新增器材</p>
+            <p>
+                <span>器材名稱</span>
+                <br>
+                <input type="text" name="eqName_Create">                
+            </p>
+            <p>
+                <span>器材圖片網址</span>
+                <br>
+                <input type="text" name="eqUrl_Create">
+            </p>
+            <p>
+                <span>器材狀態</span>
+                <br>
+                <select name="eqStatus_Create">
+                    <option value="1">顯示</option>
+                    <option value="0">隱藏</option>                
+                </select>
+            </p>
+            <p id='pButtons_Create' style="display:none;">
+                <a id='aCreate' href="#" class="btn btn-success btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">新增</span>
+                </a>
+            </p>
         </div>
     </div>
 </div>
 {{ /block }}
 {{ block 'script' }}
-<script src="/public/js/viewJs/AccountLinkingUrl.js"></script>
 <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 <script src='/public/js/viewJs/Equipments.js'></script>
 {{ /block }}
